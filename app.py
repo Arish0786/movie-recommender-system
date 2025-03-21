@@ -1,8 +1,6 @@
 import numpy as np
 import streamlit as st
-pip install py7zr
 import pickle
-import py7zr
 import requests
 
 st.set_page_config(page_title="Movie Recommender System", layout="wide")
