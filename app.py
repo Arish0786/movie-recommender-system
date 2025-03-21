@@ -66,12 +66,9 @@ url = 'https://drive.google.com/file/d/1HA3hdXbTp9yqOl9Hh2inn9tO0EVTzDMS/view?us
 response = requests.get(url)
 with open('similarity.pkl', 'wb') as f:
     f.write(response.content)
-
-similarity = pickle.load(open('similarity.pkl', 'wb'))
-
 # Load the compressed files
 movies = load_compressed_file('movies_compressed.pkl.gz')
-
+similarity = pickle.load(open('similarity.pkl', 'rb'))
 
 if movies is None or similarity is None:
     st.error("Failed to load data. Please check your files.")
