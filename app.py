@@ -67,7 +67,7 @@ response = requests.get(url)
 with open('similarity.pkl', 'wb') as f:
     f.write(response.content)
 
-similarity = pickle.load(open('similarity.pkl', 'rb'))
+similarity = pickle.load(open('similarity.pkl', 'wb'))
 
 # Load the compressed files
 movies = load_compressed_file('movies_compressed.pkl.gz')
