@@ -1,3 +1,4 @@
+import numpy as np
 import streamlit as st
 import pickle
 import gzip
@@ -62,13 +63,9 @@ def recommend(movie):
 
 st.title(':clapper: Movie Recommender System')
 
-url = 'https://drive.google.com/file/d/1HA3hdXbTp9yqOl9Hh2inn9tO0EVTzDMS/view?usp=sharing'
-response = requests.get(url)
-with open('similarity.pkl', 'wb') as f:
-    f.write(response.content)
 # Load the compressed files
 movies = load_compressed_file('movies_compressed.pkl.gz')
-similarity = pickle.load(open('similarity.pkl', 'rb'))
+similarity =load_compressed_file('similarity_compressed.pkl.gz')
 
 if movies is None or similarity is None:
     st.error("Failed to load data. Please check your files.")
