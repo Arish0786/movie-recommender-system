@@ -1,11 +1,15 @@
 import numpy as np
 import streamlit as st
 import pickle
-import gzip
+import py7zr
 import requests
 
 st.set_page_config(page_title="Movie Recommender System", layout="wide")
 st.markdown("""<style>
+    body {
+        background-color: black;
+        color: white;
+    }
     .movie-card {
         background-color: #1E293B;
         color: white;
@@ -35,15 +39,18 @@ def fetch_poster(movie_id):
     except (requests.RequestException, KeyError):
         return "https://via.placeholder.com/200?text=Error+Fetching+Image"
 
-def load_compressed_file(file_path):
-    print(f"Loading {file_path}...")
+def extract_and_load_pkl(file_path, pkl_filename):
+    print(f"Extracting {pkl_filename} from {file_path}...")
     try:
-        with gzip.open(file_path, 'rb') as f:
+        with py7zr.SevenZipFile(file_path, mode='r') as archive:
+            archive.extract(targets=[pkl_filename], path='./extracted_files/')
+            print(f"✅ {pkl_filename} extracted successfully!")
+        with open(f'./extracted_files/{pkl_filename}', 'rb') as f:
             data = pickle.load(f)
-        print(f"✅ Loaded {file_path} successfully!")
-        return data
+            print(f"✅ {pkl_filename} loaded successfully!")
+            return data
     except Exception as e:
-        print(f"Error loading {file_path}: {e}")
+        print(f"Error extracting/loading {pkl_filename}: {e}")
         return None
 
 def recommend(movie):
@@ -63,9 +70,9 @@ def recommend(movie):
 
 st.title(':clapper: Movie Recommender System')
 
-# Load the compressed files
-movies = load_compressed_file('movies_compressed.pkl.gz')
-similarity =load_compressed_file('similarity_compressed.pkl.gz')
+# Extract and Load the compressed files
+movies = extract_and_load_pkl('movies.7z', 'movies.pkl')
+similarity = extract_and_load_pkl('similarity.7z', 'similarity.pkl')
 
 if movies is None or similarity is None:
     st.error("Failed to load data. Please check your files.")
@@ -88,3 +95,4 @@ else:
                         </div>""", unsafe_allow_html=True)
             else:
                 st.warning('No recommendations available. Please try another movie.')
+
