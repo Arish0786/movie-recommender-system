@@ -62,7 +62,7 @@ def recommend(movie):
 
 st.title(':clapper: Movie Recommender System')
 
-url = 'https://drive.google.com/file/d/1X2x2U_bzePdDGaiOz6WRC2JT7eiHpAla/view?usp=drive_link'
+url = 'https://drive.google.com/file/d/1HA3hdXbTp9yqOl9Hh2inn9tO0EVTzDMS/view?usp=sharing'
 response = requests.get(url)
 with open('similarity.pkl', 'wb') as f:
     f.write(response.content)
